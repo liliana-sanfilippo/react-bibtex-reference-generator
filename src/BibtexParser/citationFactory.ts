@@ -19,6 +19,6 @@ export function createCitationGenerator({bibtexSources , special, start, style}:
         case "vancouver":
             return new VANCOUVERCitation(bibtexSources, special, start);
         default:
-            return new ACSCitation(bibtexSources, special, start);
+            return new AMACitation(bibtexSources, special, start);
     }
 }
