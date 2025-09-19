@@ -113,7 +113,7 @@ export function pages(pages: string | undefined): React.ReactNode {
             );
         } else {
             console.warn(`Non-numeric page information detected ('${pages}'). Treating as missing.`);
-            return null;
+            <span property="schema:pageBegin">{pages}</span>
         }
     } else {
         console.warn("Sorry, no page information.");
