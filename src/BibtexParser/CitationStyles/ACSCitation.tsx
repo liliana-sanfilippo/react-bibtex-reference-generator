@@ -5,7 +5,7 @@ import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {authors, journal, pages, publishedTime, title, volume} from "../../utils/htmlUtils";
 
 export class ACSCitation extends AbstractCitation {
-    constructor(bibtexSources: string[] , special?: string, start?: number) {
+    constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
         super(bibtexSources, special, start);
     }
 

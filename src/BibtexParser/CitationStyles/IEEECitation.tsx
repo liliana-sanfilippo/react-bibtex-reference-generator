@@ -17,7 +17,7 @@ import {
 } from "../../utils/htmlUtils";
 
 export class IEEECitation extends AbstractCitation {
-    constructor(bibtexSources: string[] , special?: string, start?: number) {
+    constructor(bibtexSources: string[] |Entry[] , special?: string, start?: number) {
         super(bibtexSources, special, start);
     }
     formatAuthors(authors: string): string{
