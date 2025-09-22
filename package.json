@@ -12,9 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "vite",
-    "test": "vitest"
+    "build": "tsc"
   },
   "keywords": [
     "react",
