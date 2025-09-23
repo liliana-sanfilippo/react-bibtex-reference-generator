@@ -11,7 +11,7 @@ import {
     journal,
     pages,
     publishedTime,
-    publisher,
+    publisher, renderingNotPossible,
     title,
     volume
 } from "../../utils/htmlUtils";
@@ -79,7 +79,7 @@ export class IEEECitation extends AbstractCitation {
                     </DocEntry>
                 )
             } else {
-            return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
+            return renderingNotPossible(entry.type)
         }
     }
 }

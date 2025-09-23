@@ -2,7 +2,16 @@ import {AbstractCitation} from "../AbstractCitation";
 import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
-import {authors, DocEntry, journal, pages, publishedTime, title, volume} from "../../utils/htmlUtils";
+import {
+    authors,
+    DocEntry,
+    journal,
+    pages,
+    publishedTime,
+    renderingNotPossible,
+    title,
+    volume
+} from "../../utils/htmlUtils";
 
 export class ACSCitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -35,7 +44,7 @@ export class ACSCitation extends AbstractCitation {
             </DocEntry>
         );
         } else {
-            return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
+            return renderingNotPossible(entry.type)
         }
     }
 }

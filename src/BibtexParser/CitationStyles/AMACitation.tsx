@@ -10,7 +10,7 @@ import {
     journal,
     pages,
     publishedTime,
-    publisher,
+    publisher, renderingNotPossible,
     school,
     title,
     volume
@@ -262,7 +262,7 @@ export class AMACitation extends AbstractCitation {
             );
         }
         else {
-           return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
+           return renderingNotPossible(entry.type)
         }
     }
 }

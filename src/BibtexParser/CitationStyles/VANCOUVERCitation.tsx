@@ -11,7 +11,7 @@ import {
     issue,
     journal,
     pages,
-    publishedTime, publisher,
+    publishedTime, publisher, renderingNotPossible,
     title,
     volume
 } from "../../utils/htmlUtils";
@@ -107,7 +107,7 @@ export class VANCOUVERCitation extends AbstractCitation {
             )
         }
         else {
-            return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
+            return renderingNotPossible(entry.type)
         }
     }
 }
