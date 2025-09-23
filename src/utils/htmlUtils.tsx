@@ -1,4 +1,5 @@
 import React from "react";
+import {CitationType} from "../BibtexParser/types";
 
 export function title(title:string): React.ReactNode {
     if (title === "NULL") {
@@ -189,4 +190,13 @@ export function conference(conference: string): React.ReactNode {
         return ( <span style={{color: "red"}}> NO CONFERENCE OR EVENT </span>)
     }
     return (<span>{conference}</span>)
+}
+
+export function DocEntry({children, id, index, type}:{children: React.ReactNode, id: string, index: number, type: CitationType }): React.ReactNode{
+const citType = "schema:" + type;
+    return (
+        <li key={index} typeof={citType} role="doc-biblioentry" property="schema:citation" id={id}>
+            {children}
+        </li>
+    )
 }

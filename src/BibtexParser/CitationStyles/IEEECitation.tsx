@@ -4,7 +4,7 @@ import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
     accessed, address,
-    authors,
+    authors, DocEntry,
     doi,
     fromUrl,
     issue,
@@ -28,10 +28,10 @@ export class IEEECitation extends AbstractCitation {
     }
 
     renderCitation(entry: Entry, index: number): React.ReactNode {
+        const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
             return (
-                <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;"{title(entry.title)}",&nbsp;
                     {journal((entry.journal ?? "NULL"), true)}
@@ -45,11 +45,11 @@ export class IEEECitation extends AbstractCitation {
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"))}
                     ,
                     {doi((entry.doi ?? "NULL"))}.
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "book") {
                 return (
-                    <li key={index} typeof="schema:Book" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                    <DocEntry id={id} index={index} type={"Book"}>
                         {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                         &nbsp;
                         <i>{title(entry.title)}</i>
@@ -60,12 +60,12 @@ export class IEEECitation extends AbstractCitation {
                         ,&nbsp;
                         {publishedTime((entry.year ?? "NULL"))}
                         .
-                    </li>
+                    </DocEntry>
                 )
             }
             else if (entry.type == "misc") {
                 return (
-                    <li key={index} typeof="schema:WebSite" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                    <DocEntry id={id} index={index} type={"WebSite"}>
                         {authors((entry.author ?? entry.editor ?? "NULL"))}
                         &nbsp;
                         {title(entry.title)}
@@ -76,7 +76,7 @@ export class IEEECitation extends AbstractCitation {
                         &nbsp;(accessed&nbsp;
                         {accessed((entry.note ?? "NULL"))}
                         ).
-                    </li>
+                    </DocEntry>
                 )
             } else {
             return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)

@@ -5,7 +5,7 @@ import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
     accessed,
     address,
-    authors,
+    authors, DocEntry,
     doi,
     fromUrl,
     issue,
@@ -28,10 +28,10 @@ export class VANCOUVERCitation extends AbstractCitation {
 
     }
     renderCitation(entry: Entry, index: number): React.ReactNode {
+        const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
             return (
-                <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
@@ -52,11 +52,11 @@ export class VANCOUVERCitation extends AbstractCitation {
                     {fromUrl((entry.url ?? "NULL"))}
                     &nbsp;
                     {doi((entry.doi ?? "NULL"))}
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "book") {
             return (
-                <li key={index} typeof="schema:Book" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Book"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
@@ -68,11 +68,11 @@ export class VANCOUVERCitation extends AbstractCitation {
                     {publisher((entry.publisher ?? "NULL"))}
                     ;
                     {doi((entry.doi ?? "NULL"))}.
-                </li>
+                </DocEntry>
             )
         }  else if (entry.type == "inbook") {
             return (
-                <li key={index} typeof="schema:Chapter" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Chapter"}>
                     {authors(this.formatAuthors(entry.author ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
@@ -89,11 +89,11 @@ export class VANCOUVERCitation extends AbstractCitation {
                     &nbsp;p.&nbsp;
                     {pages((entry.pages ?? "NULL"))}
                     .
-                </li>
+                </DocEntry>
             )
         } else if (entry.type == "misc") {
             return (
-                <li key={index} typeof="schema:WebSite" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"WebSite"}>
                     {authors((entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
@@ -103,7 +103,7 @@ export class VANCOUVERCitation extends AbstractCitation {
                     {accessed((entry.note ?? "NULL"))}
                     ].&nbsp;Available from:&nbsp;
                     {fromUrl((entry.url ?? "NULL"))}
-                </li>
+                </DocEntry>
             )
         }
         else {

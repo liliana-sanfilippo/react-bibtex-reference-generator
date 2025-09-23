@@ -2,7 +2,7 @@ import {AbstractCitation} from "../AbstractCitation";
 import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
-import {authors, journal, pages, publishedTime, title, volume} from "../../utils/htmlUtils";
+import {authors, DocEntry, journal, pages, publishedTime, title, volume} from "../../utils/htmlUtils";
 
 export class ACSCitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -16,9 +16,10 @@ export class ACSCitation extends AbstractCitation {
     }
 
     renderCitation(entry: Entry, index: number): React.ReactNode {
+        const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
         return (
-            <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation" id={this.createEntryId(entry.id)}>
+            <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                 {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                 &nbsp;
                 {title(entry.title)}.
@@ -31,7 +32,7 @@ export class ACSCitation extends AbstractCitation {
                 ,&nbsp;
                 {pages((entry.pages ?? "NULL"))}
                 .
-            </li>
+            </DocEntry>
         );
         } else {
             return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
