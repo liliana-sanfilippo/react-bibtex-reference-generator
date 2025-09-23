@@ -3,8 +3,8 @@ import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
-    accessed, address,
-    authors, conference, DocEntry, doi, edition,
+    address,
+    authors, DocEntry, doi, edition,
     fromUrl, how,
     issue,
     journal,
@@ -12,13 +12,12 @@ import {
     publishedTime,
     publisher, renderingNotPossible,
     school,
-    title,
-    volume
+    title
 } from "../../utils/htmlUtils";
 import {
     getAccessDateInfo,
     getConferenceInfo,
-    getPublisherInfo,
+    getPublisherInfo, getVolumeInfo,
     getVolumeOrSeriesInfo
 } from "../../utils/entryinfoUtils";
 
@@ -48,7 +47,7 @@ export class AMACitation extends AbstractCitation {
                 .&nbsp;
                 {publishedTime((entry.year ?? "NULL"))}
                 ;
-                {volume((entry.volume ?? "NULL"))}
+                {getVolumeInfo(entry)}
                 (
                 {issue((entry.number?.toString() ?? "NULL"))}
                 ):

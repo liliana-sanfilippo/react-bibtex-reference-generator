@@ -12,10 +12,9 @@ import {
     pages,
     publishedTime,
     publisher, renderingNotPossible,
-    title,
-    volume
+    title
 } from "../../utils/htmlUtils";
-import {getAccessDateInfo} from "../../utils/entryinfoUtils";
+import {getAccessDateInfo, getVolumeInfo} from "../../utils/entryinfoUtils";
 
 export class IEEECitation extends AbstractCitation {
     constructor(bibtexSources: string[] |Entry[] , special?: string, start?: number) {
@@ -36,8 +35,8 @@ export class IEEECitation extends AbstractCitation {
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;"{title(entry.title)}",&nbsp;
                     {journal((entry.journal ?? "NULL"), true)}
-                    ,&nbsp;
-                    {volume((entry.volume ?? "NULL"), true)}
+                    ,&nbsp;vol.&nbsp;
+                    {getVolumeInfo(entry)}
                     ,&nbsp;
                     {issue((entry.number?.toString() ?? "NULL"), true)}
                     , pp.&nbsp;

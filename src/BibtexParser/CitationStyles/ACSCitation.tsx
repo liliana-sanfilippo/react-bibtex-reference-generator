@@ -9,9 +9,9 @@ import {
     pages,
     publishedTime,
     renderingNotPossible,
-    title,
-    volume
+    title
 } from "../../utils/htmlUtils";
+import {getVolumeInfo} from "../../utils/entryinfoUtils";
 
 export class ACSCitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -37,7 +37,7 @@ export class ACSCitation extends AbstractCitation {
                 .&nbsp;
                 {publishedTime((entry.year ?? "NULL"), undefined, undefined, true)}
                 ,&nbsp;
-                {volume((entry.volume ?? "NULL"))}
+                {getVolumeInfo(entry)}
                 ,&nbsp;
                 {pages((entry.pages ?? "NULL"))}
                 .

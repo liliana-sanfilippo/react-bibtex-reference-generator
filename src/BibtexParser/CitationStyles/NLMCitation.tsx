@@ -11,9 +11,9 @@ import {
     pages,
     publishedTime,
     renderingNotPossible,
-    title,
-    volume
+    title
 } from "../../utils/htmlUtils";
+import {getVolumeInfo} from "../../utils/entryinfoUtils";
 
 export class NLMCitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -39,7 +39,7 @@ export class NLMCitation extends AbstractCitation {
                 .&nbsp;
                 {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), undefined, false, true)}
                 ;
-                {volume((entry.volume ?? "NULL"))}
+                {getVolumeInfo(entry)}
                 (
                 {issue((entry.number?.toString() ?? "NULL"))}
                 ):

@@ -3,7 +3,6 @@ import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
-    accessed,
     address,
     authors, DocEntry,
     doi,
@@ -12,10 +11,9 @@ import {
     journal,
     pages,
     publishedTime, publisher, renderingNotPossible,
-    title,
-    volume
+    title
 } from "../../utils/htmlUtils";
-import {getAccessDateInfo, getPublisherInfo} from "../../utils/entryinfoUtils";
+import {getAccessDateInfo, getPublisherInfo, getVolumeInfo} from "../../utils/entryinfoUtils";
 
 export class VANCOUVERCitation extends AbstractCitation {
     constructor(bibtexSources: string[]| Entry[] , special?: string, start?: number) {
@@ -41,7 +39,7 @@ export class VANCOUVERCitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.month ?? "NULL"), false, true)}
                     ;&nbsp;
-                    {volume((entry.volume ?? "NULL"))}
+                    {getVolumeInfo(entry)}
                     (
                     {issue((entry.number?.toString() ?? "NULL"))}
                     )
@@ -62,7 +60,7 @@ export class VANCOUVERCitation extends AbstractCitation {
                     &nbsp;
                     {title(entry.title)}
                     .&nbsp;
-                    {volume((entry.volume ?? "NULL"))}.
+                    {getVolumeInfo(entry)}.
                     &nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;

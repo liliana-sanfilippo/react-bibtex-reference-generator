@@ -10,9 +10,14 @@ export function getConferenceInfo(entry: Entry) {
 }
 
 export function getPublisherInfo(entry: Entry) {
-    return publisher((entry.journal ?? entry.publisher ?? entry.eventtitle ?? entry.institution ?? entry.organization ?? "NULL" ))
+    return publisher((entry.journal ?? entry.publisher ?? entry.institution ?? entry.organization ?? "NULL" ))
 }
 
 export function getVolumeOrSeriesInfo(entry: Entry) {
     return volume((entry.volume) ?? entry.series ?? "NULL")
+}
+
+
+export function getVolumeInfo(entry: Entry) {
+return volume((entry.volume ?? "NULL"))
 }
