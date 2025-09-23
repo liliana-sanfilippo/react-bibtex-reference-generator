@@ -3,7 +3,7 @@ import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
-    accessed, address,
+    address,
     authors, DocEntry,
     doi,
     fromUrl,

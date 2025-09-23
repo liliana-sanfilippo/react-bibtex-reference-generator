@@ -10,7 +10,7 @@ import {
     issue,
     journal,
     pages,
-    publishedTime, publisher, renderingNotPossible,
+    publishedTime, renderingNotPossible,
     title
 } from "../../utils/htmlUtils";
 import {getAccessDateInfo, getPublisherInfo, getVolumeInfo} from "../../utils/entryinfoUtils";
@@ -64,7 +64,7 @@ export class VANCOUVERCitation extends AbstractCitation {
                     &nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo((entry))}
                     ;
                     {doi((entry.doi ?? "NULL"))}.
                 </DocEntry>

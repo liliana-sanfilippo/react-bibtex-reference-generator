@@ -11,13 +11,12 @@ import {
     pages,
     publishedTime,
     publisher, renderingNotPossible,
-    school,
     title
 } from "../../utils/htmlUtils";
 import {
     getAccessDateInfo,
     getConferenceInfo,
-    getPublisherInfo, getVolumeInfo,
+    getPublisherInfo, getSchoolInfo, getVolumeInfo,
     getVolumeOrSeriesInfo
 } from "../../utils/entryinfoUtils";
 
@@ -138,7 +137,7 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;Masters Thesis.&nbsp;
-                    {school(entry.school ?? "NULL")}
+                    {getSchoolInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .&nbsp;
@@ -152,7 +151,7 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;Dissertation.&nbsp;
-                    {school(entry.school ?? "NULL")}
+                    {getSchoolInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .&nbsp;
