@@ -15,7 +15,12 @@ import {
     title,
     volume
 } from "../../utils/htmlUtils";
-import {accessDate} from "../../utils/entryinfoUtils";
+import {
+    getAccessDateInfo,
+    getConferenceInfo,
+    getPublisherInfo,
+    getVolumeOrSeriesInfo
+} from "../../utils/entryinfoUtils";
 
 export class AMACitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -58,7 +63,7 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .
@@ -73,7 +78,7 @@ export class AMACitation extends AbstractCitation {
                     . In:&nbsp;
                     <i>{title((entry.booktitle) ?? "NULL")}</i>
                     .&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     :
@@ -90,7 +95,7 @@ export class AMACitation extends AbstractCitation {
                     . Published&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;
-                    {accessDate(entry)}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {fromUrl((entry.url ?? "NULL"))}
                 </DocEntry>
@@ -118,9 +123,9 @@ export class AMACitation extends AbstractCitation {
                     <DocEntry id={id} index={index} type={"GenAI"}>
                         {title((entry.title ?? "NULL"))}
                         .&nbsp;Version no.&nbsp;
-                        {volume((entry.volume) ?? entry.series ?? "NULL")}
+                        {getVolumeOrSeriesInfo(entry)}
                         .&nbsp;
-                        {publisher((entry.publisher ?? "NULL"))}
+                        {getPublisherInfo(entry)}
                         .&nbsp;
                         {publishedTime((entry.year ?? "NULL"))}
                         .&nbsp;
@@ -163,7 +168,7 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;
                     {title(entry.title)}
                     .&nbsp;
-                    <i>{publisher((entry.journal ?? entry.publisher ?? "NULL"))}</i>
+                    <i>{getPublisherInfo(entry)}</i>
                     . Preprint. Posted online&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;
@@ -171,14 +176,13 @@ export class AMACitation extends AbstractCitation {
                 </DocEntry>
             );
         }  else if (entry.type == "inproceedings" || entry.type == "proceedings") {
-            // TODO add ?? "entry.event" to publisher
             return (
                 <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
                     . Presented at:&nbsp;
-                    {conference((entry.journal ?? entry.publisher ?? "NULL" ))}
+                    {getConferenceInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     ;&nbsp;
@@ -207,7 +211,7 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;Accessed&nbsp;
-                    {accessDate(entry)}
+                    {getAccessDateInfo(entry)}
                     .
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>
@@ -223,7 +227,7 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;ed.&nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .
@@ -234,13 +238,13 @@ export class AMACitation extends AbstractCitation {
                 <DocEntry id={id} index={index} type={"Transcript"}>
                     {title(entry.title)}
                     . Transcript.&nbsp;
-                    <i>{publisher(entry.publisher ?? entry.organization ?? entry.institution ?? "NULL")}</i>
+                    <i>{getPublisherInfo(entry)}</i>
                     .&nbsp;
                     {authors(entry.author  ?? "NULL")}
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessDate(entry)}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>
@@ -256,7 +260,7 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessDate(entry)}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>

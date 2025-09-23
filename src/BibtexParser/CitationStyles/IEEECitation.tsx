@@ -15,7 +15,7 @@ import {
     title,
     volume
 } from "../../utils/htmlUtils";
-import {accessDate} from "../../utils/entryinfoUtils";
+import {getAccessDateInfo} from "../../utils/entryinfoUtils";
 
 export class IEEECitation extends AbstractCitation {
     constructor(bibtexSources: string[] |Entry[] , special?: string, start?: number) {
@@ -75,7 +75,7 @@ export class IEEECitation extends AbstractCitation {
                         .&nbsp;
                         {fromUrl((entry.url ?? "NULL"))}
                         &nbsp;(accessed&nbsp;
-                        {accessDate(entry)}
+                        {getAccessDateInfo(entry)}
                         ).
                     </DocEntry>
                 )
