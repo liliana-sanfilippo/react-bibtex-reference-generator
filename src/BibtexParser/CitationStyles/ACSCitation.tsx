@@ -24,7 +24,7 @@ export class ACSCitation extends AbstractCitation {
         } else return allNames(authors).map(full_name =>  full_name.lastname + ", " + full_name.firstnames.charAt(0) + ".").join("; ");
     }
 
-    renderCitation(entry: Entry, index: number): React.ReactNode {
+    renderCitation(entry: Entry, maintenanceMode: boolean, index: number): React.ReactNode {
         const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
         return (

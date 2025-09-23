@@ -27,7 +27,7 @@ export class IEEECitation extends AbstractCitation {
         return allNames(authors).map(full_name => (full_name.firstnames.replace("-", " ").split(" ").map(part => part.charAt(0)).join("")) + "." + " " +  full_name.lastname ).join("; ") + ",";
     }
 
-    renderCitation(entry: Entry, index: number): React.ReactNode {
+    renderCitation(entry: Entry, maintenanceMode: boolean, index: number): React.ReactNode {
         const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
             return (

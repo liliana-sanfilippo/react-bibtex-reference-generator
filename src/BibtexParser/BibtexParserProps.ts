@@ -5,5 +5,6 @@ export interface BibtexParserProps {
     bibtexSources: string[] | Entry[];
     special?: string,
     start?: number,
-    style?: CitationStylesEnum | string
+    style?: CitationStylesEnum | string,
+    maintenanceMode?: boolean
 }

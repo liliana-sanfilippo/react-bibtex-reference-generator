@@ -26,7 +26,7 @@ export abstract class AbstractCitation {
         return this.start_number;
     }
 
-    abstract renderCitation(entry: Entry, index?: number): React.ReactNode;
+    abstract renderCitation(entry: Entry, maintenanceMode: boolean, index: number): React.ReactNode;
     abstract formatAuthors(authors: string): string;
 
 

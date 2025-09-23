@@ -31,7 +31,7 @@ export class AMACitation extends AbstractCitation {
         return allNames(authors).map(full_name => full_name.lastname + " " + (full_name.firstnames.replace("-", " ").split(" ").map(part => part.charAt(0)).join(""))).join(", ") + ".";
 
     }
-    renderCitation(entry: Entry, index: number): React.ReactNode {
+    renderCitation(entry: Entry,maintenanceMode: boolean, index: number): React.ReactNode {
         const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
         return (
@@ -100,12 +100,11 @@ export class AMACitation extends AbstractCitation {
             )
         }
         else if (entry.type == "software") {
-            // TODO add version at edition
             return (
                 <DocEntry id={id} index={index} type={"Software"}>
                     {title(entry.title)}
                     &nbsp;[Computer Software].&nbsp;
-                    {edition((entry.edition ?? "NULL"))}
+                    {edition((entry.edition ?? entry.version ??"NULL"))}
                     .&nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;
