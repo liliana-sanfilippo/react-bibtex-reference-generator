@@ -15,6 +15,7 @@ import {
     title,
     volume
 } from "../../utils/htmlUtils";
+import {accessDate} from "../../utils/entryinfoUtils";
 
 export class VANCOUVERCitation extends AbstractCitation {
     constructor(bibtexSources: string[]| Entry[] , special?: string, start?: number) {
@@ -100,7 +101,7 @@ export class VANCOUVERCitation extends AbstractCitation {
                     &nbsp;[Internet].&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     &nbsp;[cited&nbsp;
-                    {accessed((entry.note ?? "NULL"))}
+                    {accessDate(entry)}
                     ].&nbsp;Available from:&nbsp;
                     {fromUrl((entry.url ?? "NULL"))}
                 </DocEntry>

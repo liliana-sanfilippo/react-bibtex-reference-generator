@@ -202,5 +202,5 @@ const citType = "schema:" + type;
 }
 
 export function renderingNotPossible(type: string): React.ReactNode {
-    return (<li style={{color:  "orange"}}> Sorry, rendering {type} not possible. </li>)
+    return (<li style={{color:  "orange"}}> Sorry, rendering {type} not possible. Please contact developer to request this feature. </li>)
 }

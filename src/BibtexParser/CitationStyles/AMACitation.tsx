@@ -15,6 +15,7 @@ import {
     title,
     volume
 } from "../../utils/htmlUtils";
+import {accessDate} from "../../utils/entryinfoUtils";
 
 export class AMACitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -89,7 +90,7 @@ export class AMACitation extends AbstractCitation {
                     . Published&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;
-                    {accessed((entry.note ?? "NULL"))}
+                    {accessDate(entry)}
                     .&nbsp;
                     {fromUrl((entry.url ?? "NULL"))}
                 </DocEntry>
@@ -206,7 +207,7 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;Accessed&nbsp;
-                    {accessed((entry.note ?? "NULL"))}
+                    {accessDate(entry)}
                     .
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>
@@ -239,7 +240,7 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessed(entry.accessdate ?? entry.note ?? "NULL")}
+                    {accessDate(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>
@@ -255,7 +256,7 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessed(entry.accessdate ?? entry.note ?? "NULL")}
+                    {accessDate(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
                 </DocEntry>

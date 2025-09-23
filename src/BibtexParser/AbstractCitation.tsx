@@ -42,8 +42,6 @@ export abstract class AbstractCitation {
     }
 
     protected createEntryId(id: string): string{
-       // let citationNumber = index +1;
-       // citationNumber += this.start_number -1;
         return `${id}-reference`
     }
 
