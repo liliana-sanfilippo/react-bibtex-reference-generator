@@ -1,9 +1,9 @@
 "use client";
 import "./app.css";
-import {SupScrollLink, importAllBibFilesAsync, importBibFileAsync, Citations} from "@liliana-sanfilippo/react-bibtex-reference-generator"
 import {LoremIpsum} from 'react-lorem-ipsum';
 import {useEffect, useState} from "react";
 import {bibts} from "./examplebib";
+import {Citations, importAllBibFilesAsync, importBibFileAsync, SupScrollLink} from "../../src";
 
 export default function App() {
     const [bibtexA, setTextsA] = useState<string[]>([]);

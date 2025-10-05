@@ -42,9 +42,11 @@ export class AMACitation extends AbstractCitation {
                 {publishedTime((entry.year ?? "NULL"))}
                 ;
                 {volume((entry.volume ?? "NULL"))}
-                (
-                {issue((entry.number?.toString() ?? "NULL"))}
-                ):
+                {
+                    entry.number && <>(
+                        {issue((entry.number?.toString() ?? "NULL"))}
+                        )</>
+                }:
                 {pages((entry.pages ?? "NULL"))}
                 .
             </li>
@@ -73,8 +75,11 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publisher((entry.publisher ?? "NULL"))}
                     ;&nbsp;
-                    {publishedTime((entry.year ?? "NULL"))}
-                    :
+                    {
+                        entry.number && <>(
+                            {issue((entry.number?.toString() ?? "NULL"))}
+                            )</>
+                    }:
                     {pages((entry.pages ?? "NULL"))}
                     .
                 </li>
