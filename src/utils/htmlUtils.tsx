@@ -1,4 +1,5 @@
 import React from "react";
+import {CitationType} from "../BibtexParser/types";
 
 export function title(title:string): React.ReactNode {
     if (title === "NULL") {
@@ -33,15 +34,13 @@ export function issue(issue:string, no?: boolean): React.ReactNode {
     } else  return (<span style={warning ? { color: "red" } : {}} property="issueNumber" typeof="PublicationIssue">{issue as string}</span>)
 }
 
-export function volume(volume:string | number, vol?: boolean): React.ReactNode {
+export function volume(volume:string | number): React.ReactNode {
     let warning = false;
     if (volume === "NULL") {
         warning = true;
         volume = "NO VOLUME"
     }
-    if (vol) {
-        return (<span style={warning ? { color: "red" } : {}} property="volumeNumber" typeof="PublicationVolume">vol. {volume as string}</span>)
-    } else  return (<span style={warning ? { color: "red" } : {}} property="volumeNumber" typeof="PublicationVolume">{volume as string}</span>)
+    return (<span style={warning ? { color: "red" } : {}} property="volumeNumber" typeof="PublicationVolume">{volume as string}</span>)
 }
 
 export function publishedTime(year: number | string, month?: string, day?: string, big?: boolean, yearFist?: boolean, web?: boolean) {
@@ -189,4 +188,17 @@ export function conference(conference: string): React.ReactNode {
         return ( <span style={{color: "red"}}> NO CONFERENCE OR EVENT </span>)
     }
     return (<span>{conference}</span>)
+}
+
+export function DocEntry({children, id, index, type}:{children: React.ReactNode, id: string, index: number, type: CitationType }): React.ReactNode{
+const citType = "schema:" + type;
+    return (
+        <li key={index} typeof={citType} role="doc-biblioentry" property="schema:citation" id={id}>
+            {children}
+        </li>
+    )
+}
+
+export function renderingNotPossible(type: string): React.ReactNode {
+    return (<li style={{color:  "orange"}}> Sorry, rendering {type} not possible. Please contact developer to request this feature. </li>)
 }

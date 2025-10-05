@@ -4,7 +4,7 @@ import {BibtexParserProps} from "./BibtexParserProps";
 import {AbstractCitation} from "./AbstractCitation";
 
 
-export const Citations: React.FC<BibtexParserProps> = ({ bibtexSources , special, start, style}) => {
+export const Citations: React.FC<BibtexParserProps> = ({ bibtexSources , special, start, style, maintenanceMode}) => {
     const [citation, setCitation] = useState<AbstractCitation | null >(null);
     console.log("Mounting");
     useEffect(() => {
@@ -35,11 +35,18 @@ export const Citations: React.FC<BibtexParserProps> = ({ bibtexSources , special
         return <p>No citations available.</p>;
     }
 
+    let maintenace: boolean;
+    if (maintenanceMode != undefined){
+        maintenace = maintenanceMode
+    } else {
+        maintenace = false
+    }
+
     return (
         <div>
             <ol start={citation.getStartNumber()}>
                 {entries.map((entry, index) =>
-                    citation.renderCitation(entry, index)
+                    citation.renderCitation(entry, maintenace, index)
                 )}
             </ol>
         </div>

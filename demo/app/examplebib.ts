@@ -11,6 +11,16 @@ month = {aug},
 year = {2019},
 pages = {3629},
 }
+@article{Tan2021HEK293,
+  author    = {Tan, E. and Chin, C. S. H. and Lim, Z. F. S. and Ng, S. K.},
+  title     = {HEK293 Cell Line as a Platform to Produce Recombinant Proteins and Viral Vectors},
+  journal   = {Frontiers in Bioengineering and Biotechnology},
+  year      = {2021},
+  volume    = {9},
+  pages     = {796991},
+  doi       = {10.3389/fbioe.2021.796991}
+}
+
 @article{yang_transcription_2013,
 title        = {Transcription of the major neurospora crassa {microRNA}-like small {RNAs} relies on {RNA} polymerase {III}},
 author       = {Yang, Qiuying and Li, Liande and Xue, Zhihong and Ye, Qiaohong and Zhang, Lin and Li, Shaojie and Liu, Yi},

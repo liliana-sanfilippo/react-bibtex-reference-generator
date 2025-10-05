@@ -3,18 +3,22 @@ import {Entry} from "@liliana-sanfilippo/bibtex-ts-parser";
 import React from "react";
 import {allNames} from "@liliana-sanfilippo/author-name-parser";
 import {
-    accessed, address,
-    authors, conference, doi, edition,
+    address,
+    authors, DocEntry, doi, edition,
     fromUrl, how,
     issue,
     journal,
     pages,
     publishedTime,
-    publisher,
-    school,
-    title,
-    volume
+    publisher, renderingNotPossible,
+    title, volume
 } from "../../utils/htmlUtils";
+import {
+    getAccessDateInfo,
+    getConferenceInfo,
+    getPublisherInfo, getSchoolInfo, getVolumeInfo,
+    getVolumeOrSeriesInfo
+} from "../../utils/entryinfoUtils";
 
 export class AMACitation extends AbstractCitation {
     constructor(bibtexSources: string[] | Entry[] , special?: string, start?: number) {
@@ -27,10 +31,11 @@ export class AMACitation extends AbstractCitation {
         return allNames(authors).map(full_name => full_name.lastname + " " + (full_name.firstnames.replace("-", " ").split(" ").map(part => part.charAt(0)).join(""))).join(", ") + ".";
 
     }
-    renderCitation(entry: Entry, index: number): React.ReactNode {
+    renderCitation(entry: Entry,maintenanceMode: boolean, index: number): React.ReactNode {
+        const id = super.createEntryId(entry.id);
         if (entry.type == "article") {
         return (
-            <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+            <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                 {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                 &nbsp;
                 {title(entry.title)}
@@ -41,66 +46,67 @@ export class AMACitation extends AbstractCitation {
                 .&nbsp;
                 {publishedTime((entry.year ?? "NULL"))}
                 ;
-                {volume((entry.volume ?? "NULL"))}
-                (
-                {issue((entry.number?.toString() ?? "NULL"))}
-                ):
+                {getVolumeInfo(entry)}
+                {
+                    entry.number && <>(
+                        {issue((entry.number?.toString() ?? "NULL"))}
+                        )</>
+                }:
                 {pages((entry.pages ?? "NULL"))}
                 .
-            </li>
+            </DocEntry>
         );
         } else if (entry.type == "book") {
             return (
-                <li key={index} typeof="schema:Book" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Book"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .
-                </li>
+                </DocEntry>
             )
         } else if (entry.type == "inbook" || entry.type == "incollection") {
             return (
-                <li key={index} typeof="schema:Chapter" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Chapter"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
                     . In:&nbsp;
                     <i>{title((entry.booktitle) ?? "NULL")}</i>
                     .&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     :
                     {pages((entry.pages ?? "NULL"))}
                     .
-                </li>
+                </DocEntry>
             )
         } else if (entry.type == "online" || entry.type == "misc") {
             return (
-                <li key={index} typeof="schema:WebSite" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"WebSite"}>
                     {authors((entry.author ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
                     . Published&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;
-                    {accessed((entry.note ?? "NULL"))}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {fromUrl((entry.url ?? "NULL"))}
-                </li>
+                </DocEntry>
             )
         }
         else if (entry.type == "software") {
-            // TODO add version at edition
             return (
-                <li key={index} typeof="schema:Software" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Software"}>
                     {title(entry.title)}
                     &nbsp;[Computer Software].&nbsp;
-                    {edition((entry.edition ?? "NULL"))}
+                    {edition((entry.edition ?? entry.version ??"NULL"))}
                     .&nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;
@@ -108,114 +114,110 @@ export class AMACitation extends AbstractCitation {
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .
-                </li>
+                </DocEntry>
             )
         }
         else if (entry.type == "genai") {
                 return (
-                    <li key={index}  role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                    <DocEntry id={id} index={index} type={"GenAI"}>
                         {title((entry.title ?? "NULL"))}
                         .&nbsp;Version no.&nbsp;
-                        {volume((entry.volume) ?? entry.series ?? "NULL")}
+                        {getVolumeOrSeriesInfo(entry)}
                         .&nbsp;
-                        {publisher((entry.publisher ?? "NULL"))}
+                        {getPublisherInfo(entry)}
                         .&nbsp;
                         {publishedTime((entry.year ?? "NULL"))}
                         .&nbsp;
                         {fromUrl((entry.url ?? "NULL"))}
-                    </li>
+                    </DocEntry>
                 )
         } else if (entry.type == "mastersthesis") {
             return (
-                <li key={index} typeof="schema:Thesis" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Thesis"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;Masters Thesis.&nbsp;
-                    {school(entry.school ?? "NULL")}
+                    {getSchoolInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             )
         } else if (entry.type == "phdthesis") {
             return (
-                <li key={index} typeof="schema:Thesis" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Thesis"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;Dissertation.&nbsp;
-                    {school(entry.school ?? "NULL")}
+                    {getSchoolInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             )
         }
         else if (entry.type == "unpublished") {
             return (
-                <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
                     .&nbsp;
-                    <i>{publisher((entry.journal ?? entry.publisher ?? "NULL"))}</i>
+                    <i>{getPublisherInfo(entry)}</i>
                     . Preprint. Posted online&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;
                     {entry.doi && doi((entry.doi ?? "NULL"))}
-                </li>
+                </DocEntry>
             );
         }  else if (entry.type == "inproceedings" || entry.type == "proceedings") {
-            // TODO add ?? "entry.event" to publisher
             return (
-                <li key={index} typeof="schema:ScholarlyArticle" role="doc-biblioentry" property="schema:citation" id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"ScholarlyArticle"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     {title(entry.title)}
                     . Presented at:&nbsp;
-                    {conference((entry.journal ?? entry.publisher ?? "NULL" ))}
+                    {getConferenceInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     ;&nbsp;
                     {address((entry.address ?? "NULL"))}
                     .
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             );
         }  else if (entry.type == "booklet") {
             return (
-                <li key={index} typeof="schema:Book" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Book"}>
                     {authors(this.formatAuthors(entry.author ?? entry.editor ?? "NULL"))}
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"))}
                     .
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "techreport") {
             return (
-                <li key={index} typeof="schema:Report" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Report"}>
                     {(entry.author && authors(this.formatAuthors(entry.author))) ?? entry.organization ?? "NULL"}
                     &nbsp;
                     <i>{title(entry.title)}</i>
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .&nbsp;Accessed&nbsp;
-                    {accessed((entry.note ?? "NULL"))}
+                    {getAccessDateInfo(entry)}
                     .
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "manual") {
             return (
-                <li key={index} typeof="schema:Manual" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Manual"}>
                     {(entry.author && authors(this.formatAuthors(entry.author))) ?? entry.organization ?? "NULL"}
                     &nbsp;
                     <i>{title(entry.title)}</i>
@@ -224,33 +226,31 @@ export class AMACitation extends AbstractCitation {
                     &nbsp;ed.&nbsp;
                     {address((entry.address ?? "NULL"))}
                     :&nbsp;
-                    {publisher((entry.publisher ?? "NULL"))}
+                    {getPublisherInfo(entry)}
                     ;&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     .
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "transcript") {
             return (
-                <li key={index} typeof="schema:Transcript" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Transcript"}>
                     {title(entry.title)}
                     . Transcript.&nbsp;
-                    <i>{publisher(entry.publisher ?? entry.organization ?? entry.institution ?? "NULL")}</i>
+                    <i>{getPublisherInfo(entry)}</i>
                     .&nbsp;
                     {authors(entry.author  ?? "NULL")}
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessed(entry.accessdate ?? entry.note ?? "NULL")}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             );
         } else if (entry.type == "video") {
             return (
-                <li key={index} typeof="schema:Transcript" role="doc-biblioentry" property="schema:citation"
-                    id={super.createEntryId(entry.id)}>
+                <DocEntry id={id} index={index} type={"Transcript"}>
                     {authors((this.formatAuthors(entry.author ?? "NULL")) ?? entry.organization ?? entry.institution ?? "NULL")}
                     {!entry.author && "."}&nbsp;
                     <i>{title(entry.title)}</i>
@@ -259,14 +259,14 @@ export class AMACitation extends AbstractCitation {
                     .&nbsp;
                     {publishedTime((entry.year ?? "NULL"), (entry.month ?? "NULL"), (entry.day ?? "NULL"), false, false, true)}
                     . Accessed&nbsp;
-                    {accessed(entry.accessdate ?? entry.note ?? "NULL")}
+                    {getAccessDateInfo(entry)}
                     .&nbsp;
                     {entry.url && fromUrl(entry.url)}
-                </li>
+                </DocEntry>
             );
         }
         else {
-           return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
+           return renderingNotPossible(entry.type)
         }
     }
 }

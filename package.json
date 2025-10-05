@@ -1,6 +1,6 @@
 {
   "name": "@liliana-sanfilippo/react-bibtex-reference-generator",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publishConfig": {
     "access": "public"
   },
@@ -13,7 +13,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "vite",
-    "test": "vitest"
+    "test": "vitest",
+    "patch": "npm version patch && rm -rf dist && npm run build && npm pack && npm publish"
   },
   "keywords": [
     "react",
