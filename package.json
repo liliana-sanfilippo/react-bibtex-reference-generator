@@ -13,7 +13,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "vite",
-    "test": "vitest"
+    "test": "vitest",
+    "patch": "npm version patch && rm -rf dist && npm run build && npm pack && npm publish"
   },
   "keywords": [
     "react",
