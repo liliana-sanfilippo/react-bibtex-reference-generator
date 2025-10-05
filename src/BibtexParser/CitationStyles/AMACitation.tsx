@@ -11,7 +11,7 @@ import {
     pages,
     publishedTime,
     publisher, renderingNotPossible,
-    title
+    title, volume
 } from "../../utils/htmlUtils";
 import {
     getAccessDateInfo,
@@ -47,9 +47,11 @@ export class AMACitation extends AbstractCitation {
                 {publishedTime((entry.year ?? "NULL"))}
                 ;
                 {getVolumeInfo(entry)}
-                (
-                {issue((entry.number?.toString() ?? "NULL"))}
-                ):
+                {
+                    entry.number && <>(
+                        {issue((entry.number?.toString() ?? "NULL"))}
+                        )</>
+                }:
                 {pages((entry.pages ?? "NULL"))}
                 .
             </DocEntry>
