@@ -127,8 +127,8 @@ export function pages(pages: string | undefined): React.ReactNode {
 }
 
 
-export function fromUrl(url: string): React.ReactNode {
-    if (url === "NULL") {
+export function fromUrl(url: string| undefined): React.ReactNode {
+    if (url === undefined) {
         return (
             <span style={{color: "red"}}> NO URL </span>
         )
@@ -140,13 +140,16 @@ export function fromUrl(url: string): React.ReactNode {
 
 export function authors(authors: string|undefined): React.ReactNode {
     if (authors === undefined) {
-        return ( <span style={{color: "red"}}> NO AUTHORS </span>)
+        return ( <span style={{color: "red"}}> NO AUTHORS OR INSTITUTION </span>)
     }
     return (<span>{authors}</span>)
 }
-export function publisher(publisher: string|undefined): React.ReactNode {
+export function publisher(publisher: string|undefined, italic?: boolean): React.ReactNode {
     if (publisher === undefined) {
         return ( <span style={{color: "red"}}> NO PUBLISHER </span>)
+    }
+    if (italic) {
+        return ( <i>{publisher}</i>)
     }
     return (<span>{publisher}</span>)
 }
@@ -159,11 +162,24 @@ export function how(how: string|undefined): React.ReactNode {
 }
 
 
-export function accessed(accessed: string|undefined): React.ReactNode {
+export function accessed(accessed: string|undefined, braces?: boolean): React.ReactNode {
     if (accessed === undefined) {
         return ( <span style={{color: "red"}}> NO ACCESS DATE </span>)
     }
-    return (<span>{accessed}</span>)
+    if (braces) {
+        (<span>{accessed}</span>)
+    }
+    return (<span>({accessed})</span>)
+}
+
+export function genaitype(genaitype: string|undefined, braces?: boolean): React.ReactNode {
+    if (genaitype === undefined) {
+        return ( <span style={{color: "red"}}> NO GEN AI TYPE </span>)
+    }
+    if (braces) {
+        (<span>{genaitype}</span>)
+    }
+    return (<span>({genaitype})</span>)
 }
 
 export function address(address: string|undefined): React.ReactNode {
