@@ -1,3 +1,4 @@
+import React from "react";
 export class CitationBuilder {
     private parts: React.ReactNode[] = [];
 
@@ -29,6 +30,8 @@ export class CitationBuilder {
         if (this.parts.length > 0 && this.parts[this.parts.length - 1] === "\u00A0") {
             this.parts.pop();
         }
-        return <>{this.parts}</>;
+        return <>{this.parts.map((part, index) => (
+            <React.Fragment key={index}>{part}</React.Fragment>
+        ))}</>;
     }
 }

@@ -4,7 +4,16 @@ export class EntryWrapper {
     constructor(private entry: Entry) {}
 
 
-    get anyOriginator(): string { return (this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
+    get anyOriginator(): string {
+        console.log('organization:', this.entry.organization, 'type:', typeof this.entry.organization);
+        console.log('institution:', this.entry.institution, 'type:', typeof this.entry.institution);
+        console.log('publisher:', this.entry.publisher, 'type:', typeof this.entry.publisher);
+        console.log('school:', this.entry.school, 'type:', typeof this.entry.school);
+
+        return (this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
+    get anySoftwareOriginator(): string {
+        return ( this.entry.author ?? this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
+
     get title(): string { return this.entry.title; }
     get author(): string { return this.entry.author ?? ""; }
     get editor(): string { return this.entry.editor ?? ""; }
@@ -39,10 +48,14 @@ export class EntryWrapper {
     }
 
     hasANumber(): boolean {
-        return (this.entry.edition || this.entry.version || this.entry.number)
+         return (
+            (this.entry.edition !== undefined && this.entry.edition !== "" && this.entry.edition !== null) ||
+            (this.entry.version !== undefined && this.entry.version !== "" && this.entry.version !== null) ||
+            (this.entry.number !== undefined && this.entry.number !== "" && this.entry.number !== null)
+        );
     }
 
-    get aNumber(): string {
+    get aNumber(): string | number {
         return (this.entry.version ??  this.entry.number ?? this.entry.edition)
     }
 

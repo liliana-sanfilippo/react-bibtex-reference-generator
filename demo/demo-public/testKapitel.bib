@@ -1,0 +1,256 @@
+% 1. Minimales Kapitel (nur Pflichtfelder)
+@inbook{minimal_chapter,
+    author    = {Smith, J.},
+    title     = {Introduction to Basic Concepts},
+    booktitle = {Fundamentals of Science},
+    publisher = {Academic Press},
+    year      = {2020}
+}
+
+% 2. Vollständiges Kapitel mit allen Feldern
+@incollection{complete_chapter,
+    author    = {Johnson, M. and Williams, K.},
+    title     = {Advanced Theoretical Framework},
+    booktitle = {Handbook of Modern Research Methods},
+    editor    = {Brown, L. and Davis, R.},
+    publisher = {Research Publishers},
+    address   = {Cambridge, MA},
+    year      = {2023},
+    pages     = {145-178},
+    chapter   = {7},
+    edition   = {3rd},
+    series    = {Research Methods Series},
+    volume    = {5},
+    doi       = {10.1234/chapter.2023.007},
+    isbn      = {978-0-123456-78-9}
+}
+
+% 3. Kapitel mit Pages aber ohne Chapter-Nummer
+@inbook{pages_no_chapter,
+    author    = {Anderson, P.},
+    title     = {Quantum Entanglement Explained},
+    booktitle = {Modern Physics Topics},
+    editor    = {Wilson, H.},
+    publisher = {Physics Press},
+    address   = {Berlin, Germany},
+    year      = {2022},
+    pages     = {89-112}
+}
+
+% 4. Kapitel mit Chapter-Nummer aber ohne Pages
+@incollection{chapter_no_pages,
+    author    = {Taylor, S.},
+    title     = {Cell Division Mechanisms},
+    booktitle = {Biology Encyclopedia},
+    editor    = {Martinez, C.},
+    publisher = {Biology Publishers},
+    year      = {2021},
+    chapter   = {12},
+    edition   = {2nd}
+}
+
+% 5. Kapitel ohne Editor des Buches
+@inbook{no_editor,
+    author    = {Chen, Y.},
+    title     = {Data Structures in Practice},
+    booktitle = {Computer Science Essentials},
+    publisher = {Tech Books},
+    address   = {San Francisco, CA},
+    year      = {2024},
+    pages     = {201-245},
+    edition   = {5th}
+}
+
+% 6. Kapitel mit Series aber ohne Volume
+@incollection{series_no_volume,
+    author    = {Garcia, M.},
+    title     = {Neural Network Architectures},
+    booktitle = {Artificial Intelligence Handbook},
+    editor    = {Lee, J.},
+    publisher = {AI Press},
+    year      = {2023},
+    pages     = {67-94},
+    series    = {Machine Learning Advances}
+}
+
+% 7. Kapitel mit Volume aber ohne Series
+@inbook{volume_no_series,
+    author    = {Robinson, K.},
+    title     = {Ancient Greek Philosophy},
+    booktitle = {History of Western Thought},
+    editor    = {Thompson, R.},
+    publisher = {Philosophy Publishers},
+    address   = {Oxford, UK},
+    year      = {2019},
+    volume    = {2},
+    pages     = {34-67}
+}
+
+% 8. Kapitel ohne Address
+@incollection{no_address,
+    author    = {Murphy, E.},
+    title     = {Climate Models and Predictions},
+    booktitle = {Environmental Science Today},
+    editor    = {White, D.},
+    publisher = {Green Press},
+    year      = {2024},
+    pages     = {156-189},
+    edition   = {1st}
+}
+
+% 9. Kapitel ohne Edition
+@inbook{no_edition,
+    author    = {Cooper, L.},
+    title     = {Roman Architecture},
+    booktitle = {Classical Civilizations},
+    editor    = {Nelson, P.},
+    publisher = {History Books},
+    address   = {Rome, Italy},
+    year      = {2018},
+    pages     = {223-267}
+}
+
+% 10. Kapitel mit sehr vielen Autoren (10)
+@incollection{many_authors_chapter,
+    author    = {Adams, A. and Baker, B. and Clark, C. and Davis, D. and Evans, E. and Fisher, F. and Green, G. and Harris, H. and Irving, I. and Jones, J. and King, K. and Lewis, L.},
+    title     = {Collaborative Medical Research Results},
+    booktitle = {Annual Medicine Review},
+    editor    = {Miller, T.},
+    publisher = {Medical Press},
+    year      = {2023},
+    pages     = {1-45},
+    chapter   = {1}
+}
+
+% 11. Kapitel mit DOI
+@inbook{with_doi,
+    author    = {Wang, X. and Zhang, R.},
+    title     = {Blockchain Applications in Finance},
+    booktitle = {Financial Technology Innovations},
+    editor    = {Kumar, S.},
+    publisher = {FinTech Publishers},
+    address   = {Singapore},
+    year      = {2024},
+    pages     = {78-103},
+    doi       = {10.5678/fintech.2024.003}
+}
+
+% 12. Kapitel in mehrbändigem Werk
+@incollection{multivolume_chapter,
+    author    = {Fischer, M.},
+    title     = {Romantic Poetry Analysis},
+    booktitle = {Complete Literary Criticism},
+    editor    = {Roberts, J. and Sanders, K.},
+    publisher = {Literature Press},
+    address   = {London, UK},
+    year      = {2020},
+    series    = {Critical Studies Series},
+    volume    = {8},
+    pages     = {345-389},
+    edition   = {2nd}
+}
+
+% 13. Kapitel mit Edition und Series und Volume
+@inbook{complete_series_info,
+    author    = {Patel, R.},
+    title     = {Enzyme Kinetics},
+    booktitle = {Biochemistry Fundamentals},
+    editor    = {Hughes, L.},
+    publisher = {Chemistry Publishers},
+    year      = {2022},
+    edition   = {4th},
+    series    = {Molecular Biology Series},
+    volume    = {12},
+    pages     = {234-278}
+}
+
+% 14. Kapitel nur mit Author (kein Editor des Buches)
+@incollection{author_only_no_editor,
+    author    = {Peterson, D.},
+    title     = {Machine Translation Techniques},
+    booktitle = {Natural Language Processing},
+    publisher = {Language Tech Press},
+    address   = {Boston, MA},
+    year      = {2023},
+    pages     = {112-145},
+    edition   = {3rd}
+}
+
+% 15. Kapitel mit Number (issue)
+@inbook{with_number,
+    author    = {Sullivan, E.},
+    title     = {Statistical Inference Methods},
+    booktitle = {Advanced Statistics Handbook},
+    editor    = {Morgan, T.},
+    publisher = {Stats Publishers},
+    year      = {2021},
+    number    = {3},
+    pages     = {56-89}
+}
+
+% 16. Kapitel mit ISBN aber ohne DOI
+@incollection{isbn_no_doi,
+    author    = {Carter, B.},
+    title     = {Organic Synthesis Pathways},
+    booktitle = {Modern Organic Chemistry},
+    editor    = {Foster, G.},
+    publisher = {Chemical Press},
+    address   = {New York, NY},
+    year      = {2022},
+    pages     = {401-438},
+    isbn      = {978-0-111222-33-4},
+    edition   = {6th}
+}
+
+% 17. Kapitel mit sehr langen Seitenbereichen
+@inbook{long_page_range,
+    author    = {Bennett, H.},
+    title     = {Comprehensive Literature Review},
+    booktitle = {Research Methods in Social Sciences},
+    editor    = {Phillips, M.},
+    publisher = {Social Science Press},
+    year      = {2023},
+    pages     = {1234-1389},
+    chapter   = {45}
+}
+
+% 18. Kapitel mit einzelner Seitenzahl (nicht Range)
+@incollection{single_page,
+    author    = {Gray, J.},
+    title     = {Short Commentary},
+    booktitle = {Brief Essays in Philosophy},
+    editor    = {Collins, P.},
+    publisher = {Philosophy Books},
+    year      = {2020},
+    pages     = {78}
+}
+
+% 19. Kapitel aus sehr altem Buch
+@inbook{old_chapter,
+    author    = {Darwin, C.},
+    title     = {Natural Selection},
+    booktitle = {Origin of Species},
+    publisher = {John Murray},
+    address   = {London},
+    year      = {1859},
+    chapter   = {4}
+}
+
+% 20. Kapitel mit allen optionalen Feldern kombiniert
+@incollection{all_optional_fields,
+    author    = {Wright, S. and Turner, L.},
+    title     = {Sustainable Energy Solutions},
+    booktitle = {Environmental Engineering Handbook},
+    editor    = {Green, A. and Blue, B.},
+    publisher = {Engineering Press},
+    address   = {Munich, Germany},
+    year      = {2024},
+    pages     = {567-612},
+    chapter   = {23},
+    edition   = {5th},
+    series    = {Environmental Engineering Series},
+    volume    = {15},
+    number    = {2},
+    doi       = {10.9999/env.2024.567},
+    isbn      = {978-3-456789-01-2}
+}

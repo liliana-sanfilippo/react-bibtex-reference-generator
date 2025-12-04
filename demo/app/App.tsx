@@ -9,6 +9,7 @@ export default function App() {
     const [bibtexA, setTextsA] = useState<string[]>([]);
     const [bibtexB, setTextsB] = useState<string[]>([]);
     const [types, setTextsTypes] = useState<string[]>([]);
+    const [test, setTextsTest] = useState<string[]>([]);
     useEffect(() => {
         importAllBibFilesAsync(["example1.bib", "example2.bib"])
             .then(setTextsB)
@@ -16,14 +17,18 @@ export default function App() {
         importBibFileAsync("example2.bib")
             .then(setTextsA)
             .catch(console.error);
-        importBibFileAsync("test.bib")
+        importBibFileAsync("types.bib")
             .then(setTextsTypes)
+            .catch(console.error);
+        importBibFileAsync(["testVideo.bib"])
+            .then(setTextsTest)
             .catch(console.error);
     }, []);
     return (
     <div style={{alignContent:'center'}}>
         <div style={{maxWidth: "50%", margin: "auto"}}>
             <h1>Demo für Bibtex Citation Generator</h1>
+            <Citations bibtexSources={test} style="acs" />
             <p style={{color: "blue"}}> Please note that the scrolling to the reference only works if the content of the page is long enough to scroll.</p>
             <h2 style={{color: "blue"}}>Click on reference number to test.</h2>
             <LoremIpsum p={2} avgWordsPerSentence={6} avgSentencesPerParagraph={5} />
@@ -33,7 +38,7 @@ export default function App() {
             <LoremIpsum p={2} avgWordsPerSentence={6} avgSentencesPerParagraph={5} />
             <h2 style={{color: "blue"}}>You can also have different citation styles!</h2>
             <h3>There standard is ACS:</h3>
-            <Citations bibtexSources={bibtexA} />
+            <Citations bibtexSources={bibtexA} style="acs" />
             <h3>You can choose AMA:</h3>
             <Citations bibtexSources={bibtexA} style="ama" special="ama"/>
             <h3>And IEEE:</h3>

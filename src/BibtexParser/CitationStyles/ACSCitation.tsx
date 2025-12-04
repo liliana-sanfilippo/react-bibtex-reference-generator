@@ -24,23 +24,35 @@ export class ACSCitation extends AbstractCitation {
     }
 
     formatAuthors(authors: string | undefined): string{
-        console.log("Editors: " + authors)
-        if (authors === "NULL" || authors === undefined || authors == "") {
-            return "NULL"
-        } else {
-            let authorList: FullName[] = allNames(authors)
-            if (authorList.length > 10) {
-                authorList= authorList.slice(0, 10)
-                return  authorList.map(full_name => full_name.lastname + ", " + full_name.firstnames.charAt(0) + ".").join("; ") + "; et al.";
-            } else {
-                return  authorList.map(full_name => full_name.lastname + ", " + full_name.firstnames.charAt(0) + ".").join("; ");
-            }
+        /* else if (authors.split(" ").length < 2) {
+            return "CHECK"
+        }*/
+           try {
+               if (authors === "NULL" || authors === undefined || authors == "") {
+                   throw TypeError
+               }
+               else
+                   {
+                       let authorList: FullName[] = allNames(authors)
+                       if (authorList.length > 10) {
+                           authorList = authorList.slice(0, 10)
+                           return authorList.map(full_name => full_name.lastname + ", " + full_name.firstnames.charAt(0) + ".").join("; ") + "; et al.";
+                       } else {
+                           return authorList.map(full_name => full_name.lastname + ", " + full_name.firstnames.charAt(0) + ".").join("; ");
+                       }
+                   }
+               }
+           catch
+               (TypeError)
+               {
+                   console.log("Error with " + authors)
+               }
+
           }
-    }
+
 
     renderCitation(entry: Entry, index: number): React.ReactNode {
         const commonProps = {
-            key: index,
             property: "schema:citation",
             id: super.createEntryId(entry.id),
             role: "doc-biblioentry"
@@ -48,14 +60,10 @@ export class ACSCitation extends AbstractCitation {
         const wrapped = new EntryWrapper(entry);
         const authorField = authors(this.formatAuthors(entry.author ?? entry.editor ));
         const editorField = authors(this.formatAuthors(entry.editor));
-        console.log("authorField: ")
-        console.log(authorField)
-        console.log("editorField: ")
-        console.log(editorField)
         switch (entry.type) {
             case "article":
                 return (
-                    <li {...commonProps} typeof="schema:ScholarlyArticle">
+                    <li {...commonProps} key={index} typeof="schema:ScholarlyArticle">
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -74,7 +82,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "book":
                 return (
-                    <li {...commonProps} typeof="schema:Book">
+                    <li {...commonProps} key={index} typeof="schema:Book">
                         {new CitationBuilder()
                             .add(authorField, "\u00A0")
                             /* separator von titel je nachdem ob edition da ist */
@@ -96,7 +104,7 @@ export class ACSCitation extends AbstractCitation {
             case "inbook":
             case "incollection":
                 return (
-                    <li {...commonProps} typeof="schema:Chapter">
+                    <li {...commonProps} key={index} typeof="schema:Chapter">
                         {new CitationBuilder()
                             .add(authorField, "\u00A0")
                             .add(title(entry.title,), ":")
@@ -120,11 +128,11 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "genai":
                 return (
-                    <li {...commonProps}>
+                    <li {...commonProps} key={index}>
                         {new CitationBuilder()
-                            .add(title(entry.title, true), "\u00A0")
+                            .add(title((entry.author ?? entry.title), true), "\u00A0")
                            /* .add(volume((entry.volume?? entry.number ?? entry.version)), "\u00A0")*/
-                            .add(genaitype((entry.howpublished ?? entry.type), true), ".")
+                            .add(genaitype((entry.howpublished ?? "Generative AI"), true), ".")
                             .add(publisher(entry.publisher), ".")
                             .add(fromUrl(entry.url), "\u00A0")
                             .add(accessed(entry.note, true))
@@ -135,7 +143,7 @@ export class ACSCitation extends AbstractCitation {
             case "online":
             case "misc":
                 return (
-                    <li {...commonProps} typeof="schema:WebSite">
+                    <li {...commonProps} key={index} typeof="schema:WebSite">
                         {new CitationBuilder()
                             .addIf(entry.author, authorField, "\u00A0")
                             .addIf(!entry.author, authors(wrapped.anyOriginator), ".")
@@ -150,14 +158,15 @@ export class ACSCitation extends AbstractCitation {
                     </li>
                 );
             case "video":
+                console.log(entry)
                 return (
-                    <li {...commonProps} typeof="schema:Video">
+                    <li {...commonProps} key={index} typeof="schema:Video">
                         {new CitationBuilder()
                             .add(authorField, "\u00A0")
                             .add(title(entry.title, true), ".")
                             .addIf(entry.subtitle, title(entry.title), ".")
-                            .addIf(!entry.howpublished, publisher(entry.publisher), ",")
-                            .addIf(entry.howpublished, publisher(entry.publisher), ".")
+                            .addIf(!entry.howpublished, publisher(wrapped.anyOriginator), ",")
+                            .addIf(entry.howpublished, publisher(wrapped.anyOriginator), ".")
                             .addIf(entry.howpublished, how(entry.howpublished), ",")
                             .addIf(!entry.month || !entry.day, publishedTime((entry.year), false, false, false, true), ".")
                             .addIf(entry.month && !entry.day, publishedTime((entry.year), entry.month, false, false, false, true), ".")
@@ -170,7 +179,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "proceedings":
                 return (
-                    <li {...commonProps} typeof="schema:ScholarlyArticle">
+                    <li {...commonProps} key={index} typeof="schema:ScholarlyArticle">
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -186,7 +195,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "inproceedings":
                 return (
-                    <li {...commonProps} typeof="schema:ScholarlyArticle">
+                    <li {...commonProps} key={index} typeof="schema:ScholarlyArticle">
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -204,7 +213,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "unpublished":
                 return (
-                    <li {...commonProps}>
+                    <li {...commonProps} key={index}>
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -220,7 +229,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "mastersthesis":
                 return (
-                    <li {...commonProps}>
+                    <li {...commonProps} key={index}>
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -234,7 +243,7 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "phdthesis":
                 return (
-                    <li {...commonProps}>
+                    <li {...commonProps} key={index}>
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
@@ -248,14 +257,15 @@ export class ACSCitation extends AbstractCitation {
                 );
             case "software":
                 return (
-                    <li {...commonProps}>
+                    <li {...commonProps} key={index}>
                         {new CitationBuilder()
-                            .addIf(entry.author, authorField, "\u00A0")
-                            .addIf(!entry.author, wrapped.anyOriginator, ".")
-                            .addIf(wrapped.hasANumber, title(entry.title, true), ",")
-                            .addIf(!wrapped.hasANumber,title(entry.title, true), ".")
-                            .addIf(wrapped.hasANumber, wrapped.aNumber, ".")
-                            .addIf(entry.url, fromUrl(wrapped.anyLink, true))
+                            .add(wrapped.anySoftwareOriginator, ";")
+                            .addIf(wrapped.hasANumber(), title(entry.title, true), ",")
+                            .addIf(!wrapped.hasANumber(),title(entry.title, true), ".")
+                            .addIf(wrapped.hasANumber(), wrapped.aNumber, ";")
+                            .addIf(entry.publisher, publisher(entry.publisher), ",")
+                            .addIf(entry.year, publishedTime(entry.year), ".")
+                            .addIf(entry.url, fromUrl(wrapped.anyLink, true), "\u00A0")
                             .addIf(entry.note, accessed(entry.note, true))
                             .build()
                         }
