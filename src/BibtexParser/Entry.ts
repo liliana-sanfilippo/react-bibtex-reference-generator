@@ -10,9 +10,15 @@ export class EntryWrapper {
         console.log('publisher:', this.entry.publisher, 'type:', typeof this.entry.publisher);
         console.log('school:', this.entry.school, 'type:', typeof this.entry.school);
 
+
+        */}
         console.log("HIER")
         console.log((this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school))
-        */}
+        console.log(this.hasAnyOriginator())
+        console.log(this.entry.institution)
+        console.log(this.entry.author ? true:  false)
+        console.log(this.entry)
+
         return (this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
     get anySoftwareOriginator(): string | undefined {
         return ( this.entry.author ?? this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }

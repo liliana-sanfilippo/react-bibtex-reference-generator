@@ -20,7 +20,7 @@ export default function App() {
         importBibFileAsync("types.bib")
             .then(setTextsTypes)
             .catch(console.error);
-        importBibFileAsync(["testBooklet.bib"])
+        importBibFileAsync(["testTranscript.bib"])
             .then(setTextsTest)
             .catch(console.error);
     }, []);

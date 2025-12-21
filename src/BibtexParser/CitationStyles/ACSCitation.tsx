@@ -291,6 +291,40 @@ export class ACSCitation extends AbstractCitation {
                         }
                     </li>
                 );
+            case "manual":
+                return (
+                    <li {...commonProps} key={index} typeof="schema:Manual">
+                        {new CitationBuilder()
+                            .add(authors(this.formatAuthors(entry.author ?? entry.editor ) ?? wrapped.anyOriginator), ";")
+                            .add(title(entry.title, true), ";")
+                            /* separator von publisher je nachdem ob address da ist */
+                            .addIf(entry.address && wrapped.hasAnyOriginator() && entry.author, publisher(wrapped.anyOriginator), ":")
+                            .addIf(!entry.address && wrapped.hasAnyOriginator() && entry.author, publisher(wrapped.anyOriginator), ",")
+                            .addIf(entry.address && wrapped.hasAnyOriginator()&& entry.author, address(entry.address), ",")
+                            .addIf(entry.pages, publishedTime(entry.year), ";")
+                            .addIf(!entry.pages, publishedTime(entry.year), ".")
+                            .addIf(entry.pages, pages(entry.pages), ".", "pp ")
+                            .build()
+                        }
+                    </li>
+                );
+            case "techreport":
+                return (
+                    <li {...commonProps} key={index} typeof="schema:Report">
+                        {new CitationBuilder()
+                            .add(authors(this.formatAuthors(entry.author ?? entry.editor ) ?? wrapped.anyOriginator), ";")
+                            .add(title(entry.title, true), ";")
+                            /* separator von publisher je nachdem ob address da ist */
+                            .addIf(entry.address && wrapped.hasAnyOriginator() && entry.author, publisher(wrapped.anyOriginator), ":")
+                            .addIf(!entry.address && wrapped.hasAnyOriginator() && entry.author, publisher(wrapped.anyOriginator), ",")
+                            .addIf(entry.address && wrapped.hasAnyOriginator() && entry.author, address(entry.address), ",")
+                            .addIf(entry.pages, publishedTime(entry.year), ";")
+                            .addIf(!entry.pages, publishedTime(entry.year), ".")
+                            .addIf(entry.pages, pages(entry.pages), ".", "pp ")
+                            .build()
+                        }
+                    </li>
+                );
             default:
                 return ( <li style={{color:  "orange"}}> Sorry, rendering {entry.type} not possible. </li>)
 
