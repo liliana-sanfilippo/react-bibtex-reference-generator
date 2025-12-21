@@ -20,7 +20,7 @@ export default function App() {
         importBibFileAsync("types.bib")
             .then(setTextsTypes)
             .catch(console.error);
-        importBibFileAsync(["testTranscript.bib"])
+        importBibFileAsync(["precyse.bib"]) // testInbookIncollection
             .then(setTextsTest)
             .catch(console.error);
     }, []);
@@ -29,7 +29,8 @@ export default function App() {
         <div style={{maxWidth: "50%", margin: "auto"}}>
             <h1>Demo für Bibtex Citation Generator</h1>
             <Citations bibtexSources={test} style="acs" />
-            <p style={{color: "blue"}}> Please note that the scrolling to the reference only works if the content of the page is long enough to scroll.</p>
+            {/*  <p style={{color: "blue"}}> Please note that the scrolling to the reference only works if the
+             content of the page is long enough to scroll.</p>
             <h2 style={{color: "blue"}}>Click on reference number to test.</h2>
             <LoremIpsum p={2} avgWordsPerSentence={6} avgSentencesPerParagraph={5} />
             <p style={{color: "blue"}}> Here we have something we want to reference with thr first reference.<SupScrollLink label="1"/></p>
@@ -59,14 +60,19 @@ export default function App() {
             <Citations bibtexSources={types} style="ama" special="ama4" />
             <h3>ACS</h3>
             <Citations bibtexSources={types} style="acs" special="acs3" />
+            <h3>IEEE</h3>
             <Citations bibtexSources={types} style="ieee" special="ieee2" />
+            <h3>Vancouver</h3>
             <Citations bibtexSources={types} style="vancouver" special="van2" />
+            <h3>NLM</h3>
             <Citations bibtexSources={types} style="nlm" special="nlm2" />
             https://www.scribbr.co.uk
             https://library.saskhealthauthority.ca/citation/ama/theses
             https://owl.purdue.edu/owl/research_and_citation/ama_style/index.html
             https://www.bibguru.com/g/ama-software-manual-citation/
             https://www.bibguru.com/g/ama-software-citation/
+
+            */}
         </div>
     </div>
   );

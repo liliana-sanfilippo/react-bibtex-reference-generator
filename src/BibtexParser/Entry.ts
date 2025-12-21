@@ -84,8 +84,8 @@ export class EntryWrapper {
         return this.hasAnyOriginatorOrAuthor() || (this.entry.howpublished !== undefined && this.entry.howpublished !== "" && this.entry.howpublished !== null)
     }
 
-    get aNumber(): string | number | undefined {
-        return (this.entry.version ??  this.entry.number ?? this.entry.edition)
+    get aNumber(): string | undefined {
+        return (this.entry.version?.toString() ??  this.entry.number?.toString() ?? this.entry.edition?.toString())
     }
 
 
