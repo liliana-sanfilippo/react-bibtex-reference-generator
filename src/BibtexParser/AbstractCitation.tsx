@@ -27,7 +27,7 @@ export abstract class AbstractCitation {
     }
 
     abstract renderCitation(entry: Entry, index?: number): React.ReactNode;
-    abstract formatAuthors(authors: string): string;
+    abstract formatAuthors(authors: string): string | undefined;
 
 
     getParsedEntries(): Entry[] {

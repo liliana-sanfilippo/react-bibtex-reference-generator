@@ -23,7 +23,7 @@ export class ACSCitation extends AbstractCitation {
         super(bibtexSources, special, start);
     }
 
-    formatAuthors(authors: string | undefined): string{
+    formatAuthors(authors: string | undefined): string | undefined {
         /* else if (authors.split(" ").length < 2) {
             return "CHECK"
         }*/
@@ -149,8 +149,8 @@ export class ACSCitation extends AbstractCitation {
                             .addIf(!entry.author, authors(wrapped.anyOriginator), ".")
                             .add(title(entry.title, true), ".")
                             .addIf(entry.subtitle, title(entry.title), ".")
-                            .addIf(entry.author, publisher(entry.institution ?? entry.publisher), ",")
-                            .add(publishedTime((entry.year), (entry.month), (entry.day), false, false, false, true), ".")
+                            .addIf(entry.author && wrapped.hasAnyOriginator(), publisher(wrapped.anyOriginator), ",")
+                            .add(publishedTime((entry.year), (entry.month), (entry.day), false, false, true), ".")
                             .add(fromUrl(entry.url), "\u00A0")
                             .add(accessed(entry.note, true))
                             .build()
@@ -165,11 +165,11 @@ export class ACSCitation extends AbstractCitation {
                             .add(authorField, "\u00A0")
                             .add(title(entry.title, true), ".")
                             .addIf(entry.subtitle, title(entry.title), ".")
-                            .addIf(!entry.howpublished, publisher(wrapped.anyOriginator), ",")
-                            .addIf(entry.howpublished, publisher(wrapped.anyOriginator), ".")
+                            .addIf(!entry.howpublished && wrapped.hasAnyOriginator(), publisher(wrapped.anyOriginator), ",")
+                            .addIf(entry.howpublished && wrapped.hasAnyOriginator(), publisher(wrapped.anyOriginator), ".")
                             .addIf(entry.howpublished, how(entry.howpublished), ",")
-                            .addIf(!entry.month || !entry.day, publishedTime((entry.year), false, false, false, true), ".")
-                            .addIf(entry.month && !entry.day, publishedTime((entry.year), entry.month, false, false, false, true), ".")
+                            .addIf(!entry.month || !entry.day, publishedTime((entry.year), undefined, undefined, false, true), ".")
+                            .addIf(entry.month && !entry.day, publishedTime((entry.year), entry.month, undefined, false, false, true), ".")
                             .addIf(entry.day, publishedTime((entry.year), entry.month, entry.day), ".")
                             .add(fromUrl(entry.url), "\u00A0")
                             .add(accessed(entry.note, true))
@@ -181,7 +181,7 @@ export class ACSCitation extends AbstractCitation {
                 return (
                     <li {...commonProps} key={index} typeof="schema:ScholarlyArticle">
                         {new CitationBuilder()
-                            .add(authorField, ";")
+                            .add(authors(this.formatAuthors(entry.author ?? entry.editor ) ?? wrapped.anyOriginator), ";")
                             .add(title(entry.title), ".")
                             .addIf(entry.editor, editorField, " Eds.;")
                             /* separator von publisher je nachdem ob address da ist */
@@ -199,7 +199,7 @@ export class ACSCitation extends AbstractCitation {
                         {new CitationBuilder()
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
-                            .add(title(wrapped.anyConferenceTitle, true, true), ";", "In: ")
+                            .add(title(wrapped.anyConferenceTitle, true), ";", "In: ")
                             .addIf(entry.editor, editorField, " Eds.;")
                             /* separator von publisher je nachdem ob address da ist */
                             .addIf(entry.address, publisher(entry.publisher), ":")
@@ -211,6 +211,26 @@ export class ACSCitation extends AbstractCitation {
                         }
                     </li>
                 );
+            case "booklet":
+                return (
+                    <li {...commonProps} key={index} typeof="schema:ScholarlyArticle">
+                        {new CitationBuilder()
+                            .addIf(wrapped.hasAnyOriginatorOrAuthor(), authors(this.formatAuthors(entry.author ?? entry.editor ) ?? wrapped.anyOriginator), ";")
+                            .add(title(entry.title), ".")
+                            //.add(title(wrapped.anyConferenceTitle, true), ";", "In: ")
+                            .addIf(entry.editor, editorField, " Eds.;")
+                            /* separator von publisher je nachdem ob address da ist */
+                            .addIf(entry.address && wrapped.hasAnyBookletOriginatorOrAuthor(), publisher(wrapped.anyBookletPublisher), ":")
+                            .addIf(!entry.address && wrapped.hasAnyBookletOriginatorOrAuthor(), publisher(wrapped.anyBookletPublisher), ",")
+                            .addIf(entry.address && wrapped.hasAnyBookletOriginatorOrAuthor(), address(entry.address), ",")
+                            .add(publishedTime(entry.year), ";")
+                            .addIf(entry.pages, pages(entry.pages), ".")
+                            .addIf(entry.note, accessed(entry.note))
+                            .addIf(entry.howpublished && !entry.note && !wrapped.hasAnyBookletOriginatorOrAuthor(), publisher(entry.howpublished), ")", "(")
+                            .build()
+                        }
+                    </li>
+                );
             case "unpublished":
                 return (
                     <li {...commonProps} key={index}>
@@ -218,10 +238,10 @@ export class ACSCitation extends AbstractCitation {
                             .add(authorField, ";")
                             .add(title(entry.title), ".")
                             .add(publisher(wrapped.anyUnpublishedOrigin), ",")
-                            .add(address(entry.address), ",")
+                            .addIf(entry.publisher, address(entry.address), ",")
                             .addIf(entry.eventtitle && !entry.year, entry.eventdate , ".")
-                            .addIf(!entry.month && !entry.day, publishedTime(entry.year, false, false, false, true), ".")
-                            .addIf(entry.month && !entry.day, publishedTime(entry.year, entry.month, false, false, false, true), ".")
+                            .addIf(!entry.month && !entry.day, publishedTime(entry.year, undefined, undefined, false, true), ".")
+                            .addIf(entry.month && !entry.day, publishedTime(entry.year, entry.month, undefined, false, false, true), ".")
                             .addIf(entry.day, publishedTime(entry.year, entry.month, entry.day), ".")
                             .build()
                         }
@@ -236,7 +256,7 @@ export class ACSCitation extends AbstractCitation {
                             .add("M.S. Thesis", ",")
                             .add(school(wrapped.thesisOriginator), ",")
                             .add(publishedTime(entry.year), ".")
-                            .addIf(entry.url, fromUrl(wrapped.anyLink, true))
+                            .addIf(entry.url, fromUrl(wrapped.anyLink))
                             .build()
                         }
                     </li>
@@ -250,7 +270,7 @@ export class ACSCitation extends AbstractCitation {
                             .add("Ph.D. Thesis", ",")
                             .add(school(wrapped.thesisOriginator), ",")
                             .add(publishedTime(entry.year), ".")
-                            .addIf(entry.url, fromUrl(wrapped.anyLink, true))
+                            .addIf(entry.url, fromUrl(wrapped.anyLink))
                             .build()
                         }
                     </li>
@@ -259,13 +279,13 @@ export class ACSCitation extends AbstractCitation {
                 return (
                     <li {...commonProps} key={index}>
                         {new CitationBuilder()
-                            .add(wrapped.anySoftwareOriginator, ";")
+                            .add(authors(wrapped.anySoftwareOriginator), ";")
                             .addIf(wrapped.hasANumber(), title(entry.title, true), ",")
                             .addIf(!wrapped.hasANumber(),title(entry.title, true), ".")
                             .addIf(wrapped.hasANumber(), wrapped.aNumber, ";")
                             .addIf(entry.publisher, publisher(entry.publisher), ",")
                             .addIf(entry.year, publishedTime(entry.year), ".")
-                            .addIf(entry.url, fromUrl(wrapped.anyLink, true), "\u00A0")
+                            .addIf(entry.url, fromUrl(wrapped.anyLink), "\u00A0")
                             .addIf(entry.note, accessed(entry.note, true))
                             .build()
                         }

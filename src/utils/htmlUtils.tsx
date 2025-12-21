@@ -60,6 +60,8 @@ export function publishedTime(year: number | string | undefined, month?: string,
             if (month === "NULL") {
                 warning = true;
                 month = "NO MONTH"
+            } else {
+                month = capitalizeFirstLetter(month)
             }
             if (day) {
                 if (day === "NULL") {
@@ -141,8 +143,9 @@ export function fromUrl(url: string| undefined): React.ReactNode {
 export function authors(authors: string|undefined): React.ReactNode {
     if (authors === undefined) {
         return ( <span style={{color: "red"}}> NO AUTHORS OR INSTITUTION </span>)
+    } else {
+        return (<span>{authors}</span>)
     }
-    return (<span>{authors}</span>)
 }
 export function publisher(publisher: string|undefined, italic?: boolean): React.ReactNode {
     if (publisher === undefined) {
@@ -164,7 +167,7 @@ export function how(how: string|undefined): React.ReactNode {
 
 export function accessed(accessed: string|undefined, braces?: boolean): React.ReactNode {
     if (accessed === undefined) {
-        return ( <span style={{color: "red"}}> NO ACCESS DATE </span>)
+        return ( <span style={{color: "red"}}> NO ACCESS DATE OR NOTE </span>)
     }
     if (braces) {
         (<span>{accessed}</span>)
@@ -210,4 +213,8 @@ export function conference(conference: string): React.ReactNode {
         return ( <span style={{color: "red"}}> NO CONFERENCE OR EVENT </span>)
     }
     return (<span>{conference}</span>)
+}
+
+export function capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }

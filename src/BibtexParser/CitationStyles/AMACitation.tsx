@@ -34,8 +34,8 @@ export class AMACitation extends AbstractCitation {
             id: super.createEntryId(entry.id),
             role: "doc-biblioentry"
         };
-        const authorField = authors(this.formatAuthors(entry.author ?? entry.editor ));
-        const editorField = authors(this.formatAuthors(entry.editor));
+       // const authorField = authors(this.formatAuthors(entry.author ?? entry.editor ));
+       // const editorField = authors(this.formatAuthors(entry.editor));
         if (entry.type == "article") {
         return (
             <li {...commonProps}  typeof="schema:ScholarlyArticle">

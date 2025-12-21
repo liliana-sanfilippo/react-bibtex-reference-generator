@@ -4,14 +4,17 @@ export class EntryWrapper {
     constructor(private entry: Entry) {}
 
 
-    get anyOriginator(): string {
-        console.log('organization:', this.entry.organization, 'type:', typeof this.entry.organization);
+    get anyOriginator(): string | undefined {
+        {/* console.log('organization:', this.entry.organization, 'type:', typeof this.entry.organization);
         console.log('institution:', this.entry.institution, 'type:', typeof this.entry.institution);
         console.log('publisher:', this.entry.publisher, 'type:', typeof this.entry.publisher);
         console.log('school:', this.entry.school, 'type:', typeof this.entry.school);
 
+        console.log("HIER")
+        console.log((this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school))
+        */}
         return (this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
-    get anySoftwareOriginator(): string {
+    get anySoftwareOriginator(): string | undefined {
         return ( this.entry.author ?? this.entry.organization ?? this.entry.institution ?? this.entry.publisher ?? this.entry.school) }
 
     get title(): string { return this.entry.title; }
@@ -24,21 +27,24 @@ export class EntryWrapper {
     get journal(): string { return this.entry.journal ?? ""; }
     get volume(): string { return this.entry.volume ?? ""; }
     get number(): string | number { return this.entry.number ?? ""; }
-    get anyLink(): string { return (this.entry.url ?? this.entry.doi) }
+    get anyLink(): string | undefined { return (this.entry.url ?? this.entry.doi) }
     get address(): string { return this.entry.address ?? ""; }
     get series(): string { return this.entry.series ?? ""; }
     get edition(): string { return this.entry.edition ?? ""; }
-    get thesisOriginator(): string {
+    get thesisOriginator(): string | undefined {
         return (this.entry.school ?? this.entry.organization ?? this.entry.institution )
     }
-    get anyUnpublishedOrigin(): string {
-        return (this.entry.eventtitle ?? this.entry.booktitle ?? this.entry.publisher ?? this.entry.howpublished)
+    get anyUnpublishedOrigin(): string | undefined {
+        return (this.entry.eventtitle ?? this.entry.booktitle ?? this.entry.publisher ?? this.entry.howpublished ?? this.entry.note)
     }
 
-    get anyConferenceTitle(): string {
+    get anyConferenceTitle(): string | undefined {
         return (this.entry.booktitle ?? this.entry.eventtitle ?? this.entry.publisher ?? this.entry.journal)
     }
 
+    get anyBookletPublisher(): string | undefined {
+        return (this.entry.school ?? this.entry.organization ?? this.entry.institution ?? this.entry.howpublished ?? this.entry.note )
+    }
     get authorOrEditor(): string {
         return this.entry.author ?? this.entry.editor ?? "NULL";
     }
@@ -55,7 +61,24 @@ export class EntryWrapper {
         );
     }
 
-    get aNumber(): string | number {
+    hasAnyOriginator(): boolean {
+        return (
+            (this.entry.organization !== undefined && this.entry.organization !== "" && this.entry.organization !== null) ||
+            (this.entry.institution !== undefined && this.entry.institution !== "" && this.entry.institution !== null) ||
+            (this.entry.publisher !== undefined && this.entry.publisher !== "" && this.entry.publisher !== null) ||
+            (this.entry.school !== undefined && this.entry.school !== "" && this.entry.school !== null)
+        )
+    }
+
+    hasAnyOriginatorOrAuthor(): boolean {
+        return this.hasAnyOriginator() || (this.entry.author !== undefined && this.entry.author !== "" && this.entry.author !== null)
+    }
+
+    hasAnyBookletOriginatorOrAuthor(): boolean {
+        return this.hasAnyOriginatorOrAuthor() || (this.entry.howpublished !== undefined && this.entry.howpublished !== "" && this.entry.howpublished !== null)
+    }
+
+    get aNumber(): string | number | undefined {
         return (this.entry.version ??  this.entry.number ?? this.entry.edition)
     }
 
