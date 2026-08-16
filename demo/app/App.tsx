@@ -1,9 +1,7 @@
 "use client";
 import "./app.css";
-import {LoremIpsum} from 'react-lorem-ipsum';
 import {useEffect, useState} from "react";
-import {bibts} from "./examplebib";
-import {Citations, importAllBibFilesAsync, importBibFileAsync, SupScrollLink} from "../../src";
+import {Citations, importAllBibFilesAsync, importBibFileAsync} from "../../src";
 
 export default function App() {
     const [bibtexA, setTextsA] = useState<string[]>([]);
@@ -20,16 +18,16 @@ export default function App() {
         importBibFileAsync("types.bib")
             .then(setTextsTypes)
             .catch(console.error);
-        importBibFileAsync(["precyse.bib"]) // testInbookIncollection
+        importBibFileAsync("precyse.bib") // testInbookIncollection
             .then(setTextsTest)
             .catch(console.error);
     }, []);
     return (
-    <div style={{alignContent:'center'}}>
-        <div style={{maxWidth: "50%", margin: "auto"}}>
-            <h1>Demo für Bibtex Citation Generator</h1>
-            <Citations bibtexSources={test} style="acs" />
-            {/*  <p style={{color: "blue"}}> Please note that the scrolling to the reference only works if the
+        <div style={{alignContent: 'center'}}>
+            <div style={{maxWidth: "50%", margin: "auto"}}>
+                <h1>Demo für Bibtex Citation Generator</h1>
+                <Citations bibtexSources={test} style="acs"/>
+                {/*  <p style={{color: "blue"}}> Please note that the scrolling to the reference only works if the
              content of the page is long enough to scroll.</p>
             <h2 style={{color: "blue"}}>Click on reference number to test.</h2>
             <LoremIpsum p={2} avgWordsPerSentence={6} avgSentencesPerParagraph={5} />
@@ -73,7 +71,7 @@ export default function App() {
             https://www.bibguru.com/g/ama-software-citation/
 
             */}
+            </div>
         </div>
-    </div>
-  );
+    );
 }
